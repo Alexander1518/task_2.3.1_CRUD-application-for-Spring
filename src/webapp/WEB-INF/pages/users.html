@@ -1,18 +1,38 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8">
-  <title>users</title>
+    <meta charset="UTF-8">
+    <title>users</title>
 </head>
 <body>
-<table border="1">
-  <tr>
-  <tr th:block th:each="user : ${users}">
-    <td th:text="${user.getName()}"></td>
-    <td th:text="${user.getSurname()}"></td>
-    <td th:text="${user.getEmail()}"></td>
-    <td th:text="${user.getAge()}"></td>
-  </tr>
-</table>
+<div th:switch="${users}">
+    <h2 th:case="null">No users found!</h2>
+    <div th:case="*">
+        <h2>users</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>SURNAME</th>
+                <th>EMAIL</th>
+                <th>AGE</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.surname}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.age}"></td>
+                <td><a th:href="@{delete/{id}(id=${user.id})}">DELETE</a></td>
+                <td><a th:href="@{update/{id}(id=${user.id})}">CHANGE</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p><a href="/create">CREATE USER</a></p>
+</div>
 </body>
 </html>

@@ -1,28 +1,44 @@
 package web.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import web.dao.UserDao;
 import web.model.User;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Service
+@Transactional
 public class UserServiceImpl implements UserService {
-    private final List<User> carList= new ArrayList<>();
-
-    public List<User> fiveUser() {
-        carList.add(new User("Ivan", "Ivanov", "ivanov@mail.ru", 45));
-        carList.add(new User("Sergey", "Sergeev", "sergeev@mail.ru", 23));
-        carList.add(new User("Roman", "Romanov", "romanov@mail.ru", 28));
-        carList.add(new User("Pavel", "Pavlov", "pavlov@mail.ru", 34));
-        carList.add(new User("Fedor", "Fedorovic", "fedorovic@mail.ru", 26));
-
-        return carList;
+    private final UserDao userDao;
+    @Autowired
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     @Override
-    public List<User> getUser(Integer count) {
-        return carList
-                .stream().limit(count)
-                .collect(Collectors.toList());
+    public void add(User user) {
+        userDao.add(user);
+    }
+
+    @Override
+    public List<User> listUsers() {
+        return userDao.listUsers();
+    }
+
+    @Override
+    public void deleteUser(long id) {
+        userDao.deleteUser(id);
+
+    }
+
+    @Override
+    public void updateUser(User user) {
+        userDao.updateUser(user);
+    }
+
+    @Override
+    public User getUser(long id) {
+        return userDao.getUser(id);
     }
 }
